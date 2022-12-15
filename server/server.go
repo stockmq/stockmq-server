@@ -92,7 +92,9 @@ func (s *Server) Start() error {
 	s.StartMonitor()
 
 	// Start GRPC
-	s.StartGRPC()
+	if err := s.StartGRPC(); err != nil {
+		return err
+	}
 
 	// Start NATS client
 	s.StartNATS()

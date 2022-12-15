@@ -2,7 +2,9 @@ package server
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net"
+	"os"
 
 	"github.com/nusov/stockmq-server/pb"
 	"google.golang.org/grpc"
@@ -18,13 +20,13 @@ type GRPCConfig struct {
 }
 
 // StartNATS starts the NATS client.
-func (s *Server) StartGRPC() {
+func (s *Server) StartGRPC() error {
 	cfg := s.GRPCConfig()
 	s.Noticef("Starting GRPC on %v tls: %v", cfg.Bind, cfg.TLS)
 
 	grpcListener, err := net.Listen("tcp", cfg.Bind)
 	if err != nil {
-		s.Errorf("GRPC: cannot listen on %s: %v", cfg.Bind, err)
+		return fmt.Errorf("GRPC: cannot listen on %s: %v", cfg.Bind, err)
 	}
 
 	opts := []grpc.ServerOption{}
@@ -32,7 +34,7 @@ func (s *Server) StartGRPC() {
 	if cfg.TLS {
 		cert, err := tls.LoadX509KeyPair(cfg.TLSCertificate, cfg.TLSKey)
 		if err != nil {
-			s.Errorf("GRPC: cannot load TLS certificate: %v", err)
+			return fmt.Errorf("GRPC: cannot load TLS certificate: %v", err)
 		}
 
 		tlsConfig := &tls.Config{
@@ -55,7 +57,12 @@ func (s *Server) StartGRPC() {
 		if err := grpcServer.Serve(grpcListener); err != nil {
 			if !s.IsShutdown() {
 				s.Errorf("GRPC: error serving: %v", err)
+
+				// TODO (nusov): cancel Start() and close all open connections before exit
+				os.Exit(1)
 			}
 		}
 	}()
+
+	return nil
 }
