@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  stockmq:
+    build: .
+    ports:
+      - "9100:9100"
+    depends_on:
+      - nats
+    command: -c /config -n nats://nats:4222 -m 0.0.0.0:9100
+    configs:
+      - config
+  nats:
+    image: "nats:latest"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+configs:
+  config:
+    file: ./stockmq-server.xml
