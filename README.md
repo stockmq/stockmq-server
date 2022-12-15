@@ -5,6 +5,7 @@ High-Performance message broker for the market data
 
 ```
 GO111MODULE=on go install github.com/nats-io/nats-server/v2@latest
+$(GOPATH)/bin/nats-server
 ```
 
 # Start the server
