@@ -1,4 +1,4 @@
-# stockmq-server
+# StockMQ Server
 High-Performance message broker for the market data
 
 # Installation
