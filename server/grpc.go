@@ -19,7 +19,7 @@ type GRPCConfig struct {
 	TLSKey         string `xml:"TLSKey"`
 }
 
-// StartNATS starts the NATS client.
+// StartGRPC starts the GRPC server.
 func (s *Server) StartGRPC() error {
 	cfg := s.GRPCConfig()
 	s.Noticef("Starting GRPC on %v tls: %v", cfg.Bind, cfg.TLS)
