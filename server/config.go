@@ -25,6 +25,7 @@ type ServerConfig struct {
 	Logger    LoggerConfig  `xml:"Logger"`
 	Monitor   MonitorConfig `xml:"Monitor"`
 	NATS      NATSConfig    `xml:"NATS"`
+	GRPC      GRPCConfig    `xml:"GRPC"`
 	WebSocket []WSConfig    `xml:"WebSocket"`
 }
 
@@ -56,4 +57,11 @@ func (s *Server) NATSConfig() NATSConfig {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return s.config.NATS
+}
+
+// GRPCConfig returns GRPC configuration.
+func (s *Server) GRPCConfig() GRPCConfig {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.config.GRPC
 }

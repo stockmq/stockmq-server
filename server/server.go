@@ -6,6 +6,7 @@ package server
 import (
 	"context"
 	"errors"
+	"net"
 	"net/http"
 	"sync"
 	"sync/atomic"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/nats-io/nats.go"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -40,6 +42,10 @@ type Server struct {
 
 	// Monitor
 	monitorServer *http.Server
+
+	// GRPC
+	grpcListener net.Listener
+	grpcServer   *grpc.Server
 
 	// NATS
 	ncMu     sync.RWMutex
@@ -85,6 +91,9 @@ func (s *Server) Start() error {
 	// Start monitor
 	s.StartMonitor()
 
+	// Start GRPC
+	s.StartGRPC()
+
 	// Start NATS client
 	s.StartNATS()
 
@@ -127,7 +136,7 @@ func (s *Server) Shutdown() {
 		conn.Unlock()
 	}
 
-	// Kick HTTP monitor
+	// Kick off HTTP monitor
 	if s.monitorServer != nil {
 		s.Noticef("Shutting down the monitor...")
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
@@ -136,6 +145,13 @@ func (s *Server) Shutdown() {
 			s.Errorf("error during graceful shutdown: %v", err)
 		}
 		s.monitorServer = nil
+	}
+
+	// Kick off GRPC server
+	if s.grpcListener != nil {
+		s.Noticef("Shutting down the GRPC server...")
+		s.grpcServer.Stop()
+		s.grpcListener.Close()
 	}
 
 	// Release go routines

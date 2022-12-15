@@ -13,6 +13,13 @@
         <Header Name="Access-Control-Allow-Headers">Origin, X-Requested-With, Content-Type, Accept</Header>
     </Monitor>
 
+    <GRPC>
+        <Bind>127.0.0.1:9101</Bind>
+        <TLS>false</TLS>
+        <TLSCertificate>./certs/leaf.pem</TLSCertificate>
+        <TLSKey>./certs/leaf.key</TLSKey>
+    </GRPC>
+
     <NATS>
         <Name>StockMQ</Name>
         <URL>nats://127.0.0.1:4222</URL>
