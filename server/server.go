@@ -12,8 +12,6 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
-	influxdb2_api "github.com/influxdata/influxdb-client-go/v2/api"
 	"github.com/nats-io/nats.go"
 )
 
@@ -47,10 +45,6 @@ type Server struct {
 	ncMu     sync.RWMutex
 	ncConn   *nats.Conn
 	ncReconn atomic.Bool
-
-	// InfluxDB
-	dbClient influxdb2.Client
-	dbWriter influxdb2_api.WriteAPI
 
 	// WebSocket connections.
 	wsConnections map[string]*WSConnection
@@ -90,9 +84,6 @@ func (s *Server) Start() error {
 
 	// Start monitor
 	s.StartMonitor()
-
-	// Start DB client
-	s.StartDB()
 
 	// Start NATS client
 	s.StartNATS()
@@ -134,14 +125,6 @@ func (s *Server) Shutdown() {
 			conn.wsConn = nil
 		}
 		conn.Unlock()
-	}
-
-	s.Noticef("Shutting down the DB connection...")
-	if s.dbWriter != nil {
-		s.dbWriter.Flush()
-	}
-	if s.dbClient != nil {
-		s.dbClient.Close()
 	}
 
 	// Kick HTTP monitor

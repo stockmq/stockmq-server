@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"time"
-
-	"golang.org/x/net/context"
 )
 
 // Monitor Configuration
@@ -78,13 +75,6 @@ func (s *Server) HandleLivez(w http.ResponseWriter, r *http.Request) {
 		failures = append(failures, "nats")
 	}
 	s.ncMu.RUnlock()
-
-	// Check InfluxDB
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-	if pong, err := s.dbClient.Ping(ctx); err != nil || !pong {
-		failures = append(failures, "database")
-	}
 
 	if len(failures) == 0 {
 		v := &HealthStatus{Status: "ok"}

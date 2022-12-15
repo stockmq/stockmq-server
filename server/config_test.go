@@ -37,9 +37,3 @@ func TestNATSConfig(t *testing.T) {
 	srv, _ := NewServer(DefaultConfig())
 	expectDeepEqual(t, srv.NATSConfig(), cfg.NATS)
 }
-
-func TestDBConfig(t *testing.T) {
-	cfg := DefaultConfig()
-	srv, _ := NewServer(DefaultConfig())
-	expectDeepEqual(t, srv.DBConfig(), cfg.DB)
-}

@@ -25,7 +25,6 @@ type ServerConfig struct {
 	Logger    LoggerConfig  `xml:"Logger"`
 	Monitor   MonitorConfig `xml:"Monitor"`
 	NATS      NATSConfig    `xml:"NATS"`
-	DB        DBConfig      `xml:"DB"`
 	WebSocket []WSConfig    `xml:"WebSocket"`
 }
 
@@ -35,7 +34,6 @@ func DefaultConfig() ServerConfig {
 		Logger:  DefaultLoggerConfig(),
 		Monitor: DefaultMonitorConfig(),
 		NATS:    DefaultNATSConfig(),
-		DB:      DefaultDBConfig(),
 	}
 }
 

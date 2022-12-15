@@ -20,13 +20,6 @@
         <NoReconnect>false</NoReconnect>
      </NATS>
 
-    <DB>
-        <URL>http://127.0.0.1:8086</URL>
-        <Token><!-- InfluxDB Token --></Token>
-        <Organization>stockmq</Organization>
-        <Bucket>stockmq-data</Bucket>
-    </DB>
-
     <WebSocket>
         <Name>Binance-BTCUSD</Name>
         <Enabled>true</Enabled>
