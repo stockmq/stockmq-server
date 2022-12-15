@@ -1,6 +1,7 @@
 # Binaries
 stockmq-server
 cmd/stockmq-nats/stockmq-nats
+cmd/stockmq-grpc/stockmq-grpc
 
 # Certificates
 certs/*.key

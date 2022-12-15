@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+// Defines the import path that should be used to import the generated package,
+// and the package name.
+option go_package = "github.com/nusov/stockmq-server/pb";
+
+// The greeting service definition.
+service Monitor {
+  rpc IsRunning(google.protobuf.Empty) returns (.google.protobuf.BoolValue) {}
+}
