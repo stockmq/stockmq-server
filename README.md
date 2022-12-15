@@ -1,7 +1,7 @@
 # StockMQ Server
 High-Performance message broker for the market data.
 
-This repository contains core functionality including WebSocket connector for Binance and Tinkoff. 
+This repository provides core functionality including WebSocket connector for Binance and Tinkoff OpenAPI. 
 It doesn't include Embedded mode, GRPC APIs, Data Warehouse, Stream APIs and real-time aggregation. 
 
 # Installation
