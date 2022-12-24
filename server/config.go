@@ -35,6 +35,7 @@ func DefaultConfig() ServerConfig {
 		Logger:  DefaultLoggerConfig(),
 		Monitor: DefaultMonitorConfig(),
 		NATS:    DefaultNATSConfig(),
+		GRPC:    DefaultGRPCConfig(),
 	}
 }
 

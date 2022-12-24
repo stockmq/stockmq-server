@@ -19,6 +19,16 @@ type GRPCConfig struct {
 	TLSKey         string `xml:"TLSKey"`
 }
 
+// DefaultGRPCConfig returns default GRPC config
+func DefaultGRPCConfig() GRPCConfig {
+	return GRPCConfig{
+		Bind:           "127.0.0.1:9100",
+		TLS:            false,
+		TLSCertificate: "",
+		TLSKey:         "",
+	}
+}
+
 // StartGRPC starts the GRPC server.
 func (s *Server) StartGRPC() error {
 	cfg := s.GRPCConfig()
