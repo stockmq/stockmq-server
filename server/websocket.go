@@ -12,11 +12,7 @@ import (
 type WSMsgHandler func(s *Server, w *WSConnection, msg []byte) error
 
 var (
-	Handlers = map[string]WSMsgHandler{
-		"Debug":   WSDebugHandler,
-		"Binance": WSBinanceHandler,
-		"Tinkoff": WSTinkoffHandler,
-	}
+	Handlers = map[string]WSMsgHandler{}
 )
 
 // IsWSReconnecting returns whether websocket is scheduled to reconnect.

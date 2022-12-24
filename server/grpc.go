@@ -22,7 +22,7 @@ type GRPCConfig struct {
 // DefaultGRPCConfig returns default GRPC config
 func DefaultGRPCConfig() GRPCConfig {
 	return GRPCConfig{
-		Bind:           "127.0.0.1:9100",
+		Bind:           "127.0.0.1:9101",
 		TLS:            false,
 		TLSCertificate: "",
 		TLSKey:         "",

@@ -142,3 +142,7 @@ func WSBinanceHandler(s *Server, w *WSConnection, msg []byte) error {
 	}
 	return nil
 }
+
+func init() {
+	Handlers["Binance"] = WSBinanceHandler
+}

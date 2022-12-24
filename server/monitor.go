@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// HealthStatus represents server health status.
 type HealthStatus struct {
 	Status string `json:"status"`
 	Error  string `json:"error,omitempty"`

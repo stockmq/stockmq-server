@@ -131,3 +131,7 @@ func WSTinkoffHandler(s *Server, w *WSConnection, msg []byte) error {
 	}
 	return nil
 }
+
+func init() {
+	Handlers["Tinkoff"] = WSTinkoffHandler
+}
