@@ -37,3 +37,9 @@ func TestNATSConfig(t *testing.T) {
 	srv, _ := NewServer(DefaultConfig())
 	expectDeepEqual(t, srv.NATSConfig(), cfg.NATS)
 }
+
+func TestGRPCConfig(t *testing.T) {
+	cfg := DefaultConfig()
+	srv, _ := NewServer(DefaultConfig())
+	expectDeepEqual(t, srv.GRPCConfig(), cfg.GRPC)
+}
