@@ -1,4 +1,4 @@
-module github.com/nusov/stockmq-server
+module github.com/stockmq/stockmq-server
 
 go 1.19
 

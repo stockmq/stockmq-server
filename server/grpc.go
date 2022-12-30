@@ -6,7 +6,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/nusov/stockmq-server/pb"
+	"github.com/stockmq/stockmq-server/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	"github.com/nusov/stockmq-server/server"
+	"github.com/stockmq/stockmq-server/server"
 )
 
 var (
