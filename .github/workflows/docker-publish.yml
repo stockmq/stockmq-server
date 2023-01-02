@@ -1,3 +1,6 @@
+# This workflow will build docker images and push to Docker Hub
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
+
 name: Publish Docker image
 
 on:
@@ -31,4 +34,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
 
