@@ -14,6 +14,8 @@ $(GOPATH)/bin/nats-server
 
 # Start the server
 
+Configure all required feeds in stockmq-server.xml
+
 ```
 go build
 ./stockmq-server -c stockmq-server.xml
