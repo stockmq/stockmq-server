@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 
 // Defines the import path that should be used to import the generated package,
 // and the package name.
-option go_package = "github.com/nusov/stockmq-server/pb";
+option go_package = "github.com/stockmq/stockmq-server/pb";
 
 // The greeting service definition.
 service Monitor {
