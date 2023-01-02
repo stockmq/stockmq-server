@@ -1,4 +1,7 @@
 # StockMQ Server
+
+![build status](https://github.com/stockmq/stockmq-server/actions/workflows/build.yml/badge.svg)
+
 High-Performance message broker for the market data.
 
 This repository provides core functionality including WebSocket connector for Binance and Tinkoff OpenAPI. 
