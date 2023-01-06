@@ -1,6 +1,8 @@
 # StockMQ Server
 
 ![build status](https://github.com/stockmq/stockmq-server/actions/workflows/build.yml/badge.svg)
+![build status](https://github.com/stockmq/stockmq-server/actions/workflows/docker-build.yml/badge.svg)
+
 
 High-Performance message broker for the market data.
 
