@@ -17,6 +17,25 @@ GO111MODULE=on go install github.com/nats-io/nats-server/v2@latest
 $(GOPATH)/bin/nats-server
 ```
 
+# Example configuration
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+    <WebSocket>
+        <Name>Binance-BTCUSD</Name>
+        <Enabled>true</Enabled>
+        <URL>wss://stream.binance.com:9443/ws</URL>
+        <Handler>Binance</Handler>
+        <DialTimeout>4</DialTimeout>
+        <RetryDelay>3</RetryDelay>
+        <PingTimeout>60</PingTimeout>
+        <ReadLimit>655350</ReadLimit>
+        <InitMessage>{"id": 0, "method": "SUBSCRIBE", "params": ["btcusdt@kline_1s", "btcusdt@depth"]}</InitMessage>
+    </WebSocket>
+</Config>
+```
+
 # Start the server
 
 Configure all required feeds in stockmq-server.xml
