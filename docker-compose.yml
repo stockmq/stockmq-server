@@ -4,9 +4,10 @@ services:
     build: .
     ports:
       - "9100:9100"
+      - "9101:9101"
     depends_on:
       - nats
-    command: -c /config -n nats://nats:4222 -m 0.0.0.0:9100
+    command: -c /config -n nats://nats:4222 -m 0.0.0.0:9100 -g -m 0.0.0.0:9101
     configs:
       - config
   nats:

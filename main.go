@@ -17,6 +17,7 @@ func main() {
 	flag.StringVar(&cfn, "c", "", "Configuration file (XML)")
 	flag.StringVar(&cfg.NATS.URL, "n", "nats://127.0.0.1:4222", "NATS URL")
 	flag.StringVar(&cfg.Monitor.Bind, "m", "127.0.0.1:9100", "Monitor bind address")
+	flag.StringVar(&cfg.GRPC.Bind, "g", "127.0.0.1:9101", "gRPC bind address")
 	flag.BoolVar(&cfg.Logger.Debug, "d", false, "Enable Debug messages")
 	flag.Parse()
 

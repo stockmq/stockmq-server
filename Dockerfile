@@ -21,4 +21,4 @@ EXPOSE 9100/tcp
 EXPOSE 9101/tcp
 
 ENTRYPOINT [ "/app" ]
-CMD [ "-n", "nats://nats:4222", "-m", "0.0.0.0:9100" ]
+CMD [ "-n", "nats://nats:4222", "-m", "0.0.0.0:9100", "-g", "0.0.0.0:9101" ]
