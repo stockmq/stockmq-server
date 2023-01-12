@@ -45,7 +45,7 @@ go build
 ./stockmq-server -c stockmq-server.xml
 ```
 
-# Listen to NATS
+# Listen for updates
 
 ```
 cd cmd/stockmq-nats
