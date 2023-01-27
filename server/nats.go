@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/nats-io/nats.go"
@@ -23,6 +24,16 @@ func DefaultNATSConfig() NATSConfig {
 		RetryDelay:  5,
 		NoReconnect: false,
 	}
+}
+
+// NATSSubject returns the subject for the candle message
+func (m *Candle) NATSSubject() string {
+	return fmt.Sprintf("C.%s.%s.%s", m.Interval, m.Symbol, m.Source)
+}
+
+// NATSSubject returns the subject for the candle message
+func (m *Quote) NATSSubject() string {
+	return fmt.Sprintf("Q.%s.%s", m.Symbol, m.Source)
 }
 
 // StartNATS starts the NATS client.

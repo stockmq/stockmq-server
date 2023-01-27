@@ -1,10 +1,6 @@
 package server
 
-import (
-	"fmt"
-)
-
-// MessageHeader represents common fields for each message
+// MessageHeader represents common fields for each message.
 type MessageHeader struct {
 	Symbol  string `json:"symbol"`
 	Source  string `json:"source"`
@@ -13,6 +9,7 @@ type MessageHeader struct {
 	TimeRcv int64  `json:"time_rcv"`
 }
 
+// Candle represents OLHCV bar.
 type Candle struct {
 	MessageHeader
 
@@ -24,6 +21,7 @@ type Candle struct {
 	Volume   string `json:"volume"`
 }
 
+// Quote represents bid and ask
 type Quote struct {
 	MessageHeader
 
@@ -31,14 +29,4 @@ type Quote struct {
 	Bids      [][]string `json:"bids"`
 	AsksDepth int        `json:"asks_depth"`
 	Asks      [][]string `json:"asks"`
-}
-
-// NATSSubject returns the subject for the candle message
-func (m *Candle) NATSSubject() string {
-	return fmt.Sprintf("C.%s.%s.%s", m.Interval, m.Symbol, m.Source)
-}
-
-// NATSSubject returns the subject for the candle message
-func (m *Quote) NATSSubject() string {
-	return fmt.Sprintf("Q.%s.%s", m.Symbol, m.Source)
 }
