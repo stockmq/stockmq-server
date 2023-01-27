@@ -9,7 +9,22 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// WebSocket Handler callback.
 type WSMsgHandler func(s *Server, w *WSConnection, msg []byte) error
+
+// WebSocket Configuration.
+type WSConfig struct {
+	Name         string   `xml:"Name"`
+	Enabled      bool     `xml:"Enabled"`
+	URL          string   `xml:"URL"`
+	Handler      string   `xml:"Handler"`
+	DialTimeout  int      `xml:"DialTimeout"`
+	RetryDelay   int      `xml:"RetryDelay"`
+	PingTimeout  int      `xml:"PingTimeout"`
+	ReadLimit    int64    `xml:"ReadLimit"`
+	Headers      []Header `xml:"Header"`
+	InitMessages []string `xml:"InitMessage"`
+}
 
 var (
 	Handlers = map[string]WSMsgHandler{}

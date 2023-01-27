@@ -26,6 +26,11 @@ func DefaultNATSConfig() NATSConfig {
 	}
 }
 
+// NATSConfig returns NATS configuration.
+func (s *Server) NATSConfig() NATSConfig {
+	return s.ServerConfig().NATS
+}
+
 // NATSSubject returns the subject for the candle message
 func (m *Candle) NATSSubject() string {
 	return fmt.Sprintf("C.%s.%s.%s", m.Interval, m.Symbol, m.Source)

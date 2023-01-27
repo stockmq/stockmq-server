@@ -17,6 +17,11 @@ func DefaultLoggerConfig() LoggerConfig {
 	}
 }
 
+// LoggerConfig returns Logger configuration.
+func (s *Server) LoggerConfig() LoggerConfig {
+	return s.ServerConfig().Logger
+}
+
 // Debugf prints the debug message to the log.
 func (s *Server) Debugf(format string, v ...any) {
 	if s.LoggerConfig().Debug {

@@ -13,6 +13,14 @@
         <Header Name="Access-Control-Allow-Headers">Origin, X-Requested-With, Content-Type, Accept</Header>
     </Monitor>
 
+    <InfluxDB>
+        <Enabled>true</Enabled>
+        <URL>http://127.0.0.1:8086</URL>
+        <Token><!-- InfluxDB Token --></Token>
+        <Organization>stockmq</Organization>
+        <Bucket>stockmq-data</Bucket>
+    </InfluxDB>
+
     <GRPC>
         <Bind>127.0.0.1:9101</Bind>
         <TLS>false</TLS>

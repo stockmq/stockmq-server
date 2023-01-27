@@ -1,25 +1,13 @@
 package server
 
 import (
-	"bytes"
-	"log"
 	"testing"
 )
 
-func expectOutput(t *testing.T, f func(), expected string) {
-	var buf bytes.Buffer
-	writer := log.Writer()
-	flags := log.Flags()
-
-	log.SetOutput(&buf)
-	log.SetFlags(flags &^ (log.Ldate | log.Ltime))
-
-	defer func() {
-		log.SetFlags(flags)
-		log.SetOutput(writer)
-	}()
-	f()
-	expectDeepEqual(t, buf.String(), expected)
+func TestLoggerConfig(t *testing.T) {
+	cfg := DefaultConfig()
+	srv, _ := NewServer(DefaultConfig())
+	expectDeepEqual(t, srv.LoggerConfig(), cfg.Logger)
 }
 
 func TestLogDebugf(t *testing.T) {

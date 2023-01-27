@@ -1,5 +1,11 @@
 package server
 
+// Header represents HTTP header
+type Header struct {
+	Name string `xml:"Name,attr"`
+	Text string `xml:",chardata"`
+}
+
 // MessageHeader represents common fields for each message.
 type MessageHeader struct {
 	Symbol  string `json:"symbol"`

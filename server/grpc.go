@@ -29,6 +29,11 @@ func DefaultGRPCConfig() GRPCConfig {
 	}
 }
 
+// GRPCConfig returns GRPC configuration.
+func (s *Server) GRPCConfig() GRPCConfig {
+	return s.ServerConfig().GRPC
+}
+
 // StartGRPC starts the GRPC server.
 func (s *Server) StartGRPC() error {
 	cfg := s.GRPCConfig()

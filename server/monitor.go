@@ -1,7 +1,9 @@
 package server
 
 import (
+	"context"
 	"fmt"
+	"time"
 )
 
 // HealthStatus represents server health status.
@@ -13,6 +15,16 @@ type HealthStatus struct {
 // healthStatus returns the current status of the server.
 func (s *Server) healthStatus() *HealthStatus {
 	failures := []string{}
+
+	// Check InfluxDB
+	if s.InfluxDBConfig().Enabled {
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+		defer cancel()
+		if pong, err := s.dbClient.Ping(ctx); err != nil || !pong {
+			failures = append(failures, "influxdb")
+		}
+
+	}
 
 	// Check NATS
 	s.ncMu.RLock()

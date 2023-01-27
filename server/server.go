@@ -15,6 +15,9 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/grpc"
+
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	influxdb2_api "github.com/influxdata/influxdb-client-go/v2/api"
 )
 
 var (
@@ -42,6 +45,10 @@ type Server struct {
 
 	// Monitor
 	monitorServer *http.Server
+
+	// InfluxDB
+	dbClient influxdb2.Client
+	dbWriter influxdb2_api.WriteAPI
 
 	// GRPC
 	grpcListener net.Listener
@@ -90,6 +97,11 @@ func (s *Server) Start() error {
 
 	// Start monitor
 	s.StartMonitor()
+
+	// Start InfluxDB client
+	if s.InfluxDBConfig().Enabled {
+		s.StartInfluxDB()
+	}
 
 	// Start GRPC
 	if err := s.StartGRPC(); err != nil {
@@ -147,6 +159,16 @@ func (s *Server) Shutdown() {
 			s.Errorf("error during graceful shutdown: %v", err)
 		}
 		s.monitorServer = nil
+	}
+
+	// Kick off InfluxDB
+	if s.dbWriter != nil {
+		s.Noticef("Shutting down the InfluxDB connection...")
+		s.dbWriter.Flush()
+
+		if s.dbClient != nil {
+			s.dbClient.Close()
+		}
 	}
 
 	// Kick off GRPC server
