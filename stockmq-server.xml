@@ -14,7 +14,7 @@
     </Monitor>
 
     <InfluxDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>http://127.0.0.1:8086</URL>
         <Token><!-- InfluxDB Token --></Token>
         <Organization>stockmq</Organization>
@@ -59,7 +59,7 @@
         <InitMessage>{"id": 0, "method": "SUBSCRIBE", "params": ["ltcusdt@kline_1m", "ltcusdt@depth"]}</InitMessage>
     </WebSocket>
 
-    <!-- Deprecation warning: Tinkoff OpenAPI will be deprecated in 2022. -->
+    <!-- Deprecation warning: Tinkoff OpenAPI will be deprecated in 2023. -->
     <WebSocket>
         <Name>Tinkoff-USDRUR</Name>
         <Enabled>false</Enabled>
