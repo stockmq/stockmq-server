@@ -36,6 +36,11 @@ $(GOPATH)/bin/nats-server
 </Config>
 ```
 
+# Persistence
+
+It's possible to persist message to MongoDB and InfluxDB. See stockmq-config.xml for details.
+
+
 # Start the server
 
 Configure all required feeds in stockmq-server.xml
