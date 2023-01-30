@@ -37,7 +37,7 @@ func (s *Server) InfluxDBConfig() InfluxDBConfig {
 // StartDB starts the DB (InfluxDB) client.
 func (s *Server) StartInfluxDB() {
 	cfg := s.InfluxDBConfig()
-	s.Noticef("Starting DB connection to %s", cfg.URL)
+	s.Noticef("Starting InfluxDB connection to %s", cfg.URL)
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -52,7 +52,7 @@ func (s *Server) StartInfluxDB() {
 			select {
 			case err := <-errorsCh:
 				if err != nil {
-					s.Errorf("DB write error: %v", err)
+					s.Errorf("InfluxDB write error: %v", err)
 				}
 			case <-s.quitCh:
 				return
@@ -61,7 +61,7 @@ func (s *Server) StartInfluxDB() {
 	}()
 }
 
-// InfluxDBPoint returns the Point
+// InfluxDBPoint returns the Point.
 func (m *Candle) InfluxDBPoint() *write.Point {
 	p := influxdb2.NewPoint(
 		"candle",
@@ -82,7 +82,7 @@ func (m *Candle) InfluxDBPoint() *write.Point {
 	return p
 }
 
-// InfluxDBPoint returns the Point
+// InfluxDBPoint returns the Point.
 func (m *Quote) InfluxDBPoint() *write.Point {
 	p := influxdb2.NewPoint(
 		"quote",
@@ -99,4 +99,11 @@ func (m *Quote) InfluxDBPoint() *write.Point {
 	)
 
 	return p
+}
+
+// InfluxDBStore stores the data point.
+func (s *Server) InfluxDBStore(point *write.Point) {
+	if s.dbWriter != nil {
+		s.dbWriter.WritePoint(point)
+	}
 }

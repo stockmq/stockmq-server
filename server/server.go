@@ -14,6 +14,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -45,6 +46,11 @@ type Server struct {
 
 	// Monitor
 	monitorServer *http.Server
+
+	// MongoDB
+	mongoMu     sync.RWMutex
+	mongoReconn atomic.Bool
+	mongoClient *mongo.Client
 
 	// InfluxDB
 	dbClient influxdb2.Client
@@ -97,6 +103,11 @@ func (s *Server) Start() error {
 
 	// Start monitor
 	s.StartMonitor()
+
+	// Start MongoDB client
+	if s.MongoDBConfig().Enabled {
+		s.StartMongoDB()
+	}
 
 	// Start InfluxDB client
 	if s.InfluxDBConfig().Enabled {
@@ -159,6 +170,12 @@ func (s *Server) Shutdown() {
 			s.Errorf("error during graceful shutdown: %v", err)
 		}
 		s.monitorServer = nil
+	}
+
+	// Kick off MongoDB
+	if s.mongoClient != nil {
+		s.Noticef("Shutting down the MongoDB connection...")
+		s.CloseMongoDB()
 	}
 
 	// Kick off InfluxDB

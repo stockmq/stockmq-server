@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 // HealthStatus represents server health status.
@@ -15,6 +17,15 @@ type HealthStatus struct {
 // healthStatus returns the current status of the server.
 func (s *Server) healthStatus() *HealthStatus {
 	failures := []string{}
+
+	// Check MongoDB
+	if s.MongoDBConfig().Enabled {
+		s.mongoMu.Lock()
+		if err := s.mongoClient.Ping(context.TODO(), readpref.Primary()); err != nil {
+			failures = append(failures, "mongodb")
+		}
+		s.mongoMu.Unlock()
+	}
 
 	// Check InfluxDB
 	if s.InfluxDBConfig().Enabled {

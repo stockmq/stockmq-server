@@ -4,6 +4,7 @@ package server
 type ServerConfig struct {
 	Logger    LoggerConfig   `xml:"Logger"`
 	Monitor   MonitorConfig  `xml:"Monitor"`
+	MongoDB   MongoDBConfig  `xml:"MongoDB"`
 	InfluxDB  InfluxDBConfig `xml:"InfluxDB"`
 	NATS      NATSConfig     `xml:"NATS"`
 	GRPC      GRPCConfig     `xml:"GRPC"`
@@ -15,6 +16,7 @@ func DefaultConfig() ServerConfig {
 	return ServerConfig{
 		Logger:   DefaultLoggerConfig(),
 		Monitor:  DefaultMonitorConfig(),
+		MongoDB:  DefaultMongoDBConfig(),
 		InfluxDB: DefaultInfluxDBConfig(),
 		NATS:     DefaultNATSConfig(),
 		GRPC:     DefaultGRPCConfig(),
