@@ -23,7 +23,7 @@ func DefaultMongoDBConfig() MongoDBConfig {
 	return MongoDBConfig{
 		Enabled:    false,
 		URL:        "mongodb://localhost:27017",
-		RetryDelay: 3,
+		RetryDelay: 5,
 		Database:   "stockmq",
 		Candles:    "candles",
 		Quotes:     "quotes",
@@ -46,7 +46,7 @@ func (s *Server) CloseMongoDB() {
 	defer s.mongoMu.Unlock()
 	if s.mongoClient != nil {
 		if err := s.mongoClient.Disconnect(context.TODO()); err != nil {
-			s.Errorf("MongoDB: cannot Disconect()")
+			s.Errorf("MongoDB: cannot Disconnect()")
 		}
 
 		s.mongoClient = nil
@@ -71,8 +71,8 @@ func (s *Server) StartMongoDB() {
 
 // StartMongoDB starts MongoDB client.
 func (s *Server) HandleMongoDBError(err error) {
-	// Do nothing if the server is shutting down or NATS is reconnecting
-	if s.IsShutdown() || s.IsNATSReconnecting() {
+	// Do nothing if the server is shutting down or MongoDB is reconnecting
+	if s.IsShutdown() || s.IsMongoDBReconnecting() {
 		return
 	}
 
