@@ -38,7 +38,33 @@ $(GOPATH)/bin/nats-server
 
 # Persistence
 
-It's possible to persist message to MongoDB and InfluxDB. See stockmq-config.xml for details.
+It's possible to persist messages to MongoDB and InfluxDB. See stockmq-config.xml for details.
+
+For MongoDB database and collections will be created automatically.
+
+```xml
+    <MongoDB>
+        <Enabled>true</Enabled>
+        <URL>mongodb://localhost:27017</URL>
+        <RetryDelay>5</RetryDelay>
+        <Database>stockmq</Database>
+        <Candles>candles</Candles>
+        <Quotes>quotes</Quotes>
+    </MongoDB>
+```
+
+InfluxDB requires organization and access token with write access.
+
+```xml
+    <InfluxDB>
+        <Enabled>false</Enabled>
+        <URL>http://127.0.0.1:8086</URL>
+        <Token><!-- InfluxDB Token --></Token>
+        <Organization>stockmq</Organization>
+        <Bucket>stockmq-data</Bucket>
+    </InfluxDB>
+```
+
 
 
 # Start the server
