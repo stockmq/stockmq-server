@@ -25,6 +25,29 @@ var (
 	ErrServerShutdown = errors.New("server was shutdown or already started")
 )
 
+// Server Configuration.
+type ServerConfig struct {
+	Logger    LoggerConfig   `xml:"Logger"`
+	Monitor   MonitorConfig  `xml:"Monitor"`
+	MongoDB   MongoDBConfig  `xml:"MongoDB"`
+	InfluxDB  InfluxDBConfig `xml:"InfluxDB"`
+	NATS      NATSConfig     `xml:"NATS"`
+	GRPC      GRPCConfig     `xml:"GRPC"`
+	WebSocket []WSConfig     `xml:"WebSocket"`
+}
+
+// DefaultConfig returns default ServerConfig.
+func DefaultConfig() ServerConfig {
+	return ServerConfig{
+		Logger:   DefaultLoggerConfig(),
+		Monitor:  DefaultMonitorConfig(),
+		MongoDB:  DefaultMongoDBConfig(),
+		InfluxDB: DefaultInfluxDBConfig(),
+		NATS:     DefaultNATSConfig(),
+		GRPC:     DefaultGRPCConfig(),
+	}
+}
+
 type WSConnection struct {
 	sync.RWMutex
 
@@ -85,6 +108,13 @@ func NewServer(config ServerConfig) (*Server, error) {
 		}
 	}
 	return s, nil
+}
+
+// Config returns a copy of Server configuration.
+func (s *Server) ServerConfig() ServerConfig {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.config
 }
 
 // Start the server
