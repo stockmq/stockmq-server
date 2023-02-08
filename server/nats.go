@@ -16,6 +16,11 @@ type NATSConfig struct {
 	NoReconnect bool   `xml:"NoReconnect"`
 }
 
+// NATSSubjecter provided methods to generate subjects from entities.
+type NATSSubjecter interface {
+	NATSSubject() string
+}
+
 // DefaultNATSConfig returns default NATS config
 func DefaultNATSConfig() NATSConfig {
 	return NATSConfig{
@@ -112,14 +117,14 @@ func (s *Server) HandleNATSError(err error) {
 }
 
 // NATSSend sends message to the NATS.
-func (s *Server) NATSSend(subject string, object interface{}) {
+func (s *Server) NATSSend(object NATSSubjecter) {
 	s.ncMu.Lock()
 	nc := s.ncConn
 	s.ncMu.Unlock()
 
 	if nc != nil {
 		if b, err := json.Marshal(object); err == nil {
-			if err := nc.Publish(subject, b); err != nil {
+			if err := nc.Publish(object.NATSSubject(), b); err != nil {
 				s.HandleNATSError(err)
 			}
 		}

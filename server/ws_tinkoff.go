@@ -95,7 +95,7 @@ func WSTinkoffHandler(s *Server, w *WSConnection, msg []byte) error {
 			r.Bids[i] = []string{fmt.Sprintf("%g", c.Bids[i][0]), fmt.Sprintf("%g", c.Bids[i][1])}
 		}
 
-		return s.ProcessQuote(w.wsConfig.Name, r)
+		return s.ProcessQuote(r)
 	case tinkoffEventCandle:
 		c := &TinkoffCandle{}
 		if err := json.Unmarshal(message.Payload, c); err != nil {
@@ -121,7 +121,7 @@ func WSTinkoffHandler(s *Server, w *WSConnection, msg []byte) error {
 			Volume:   fmt.Sprintf("%d", c.Volume),
 		}
 
-		return s.ProcessCandle(w.wsConfig.Name, r)
+		return s.ProcessCandle(r)
 	case tinkoffEventError:
 		c := &TinkoffError{}
 		if err := json.Unmarshal(message.Payload, c); err != nil {

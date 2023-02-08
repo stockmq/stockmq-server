@@ -99,7 +99,7 @@ func WSBinanceHandler(s *Server, w *WSConnection, msg []byte) error {
 				Volume:   c.Kline.Volume,
 			}
 
-			return s.ProcessCandle(w.wsConfig.Name, r)
+			return s.ProcessCandle(r)
 		case binenceEventDepthUpdate:
 			c := &BinanceOrderBook{}
 			if err := json.Unmarshal(msg, c); err != nil {
@@ -121,7 +121,7 @@ func WSBinanceHandler(s *Server, w *WSConnection, msg []byte) error {
 				Bids:      c.Bids,
 			}
 
-			return s.ProcessQuote(w.wsConfig.Name, r)
+			return s.ProcessQuote(r)
 		default:
 			s.Errorf("WSS %s: unknown event '%s'", w.wsConfig.Name, *message.EventType)
 		}
