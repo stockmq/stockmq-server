@@ -18,6 +18,11 @@ type InfluxDBConfig struct {
 	Bucket       string `xml:"Bucket"`
 }
 
+// InfluxDBPointer provides a method to construct write.Point.
+type InfluxDBPointer interface {
+	InfluxDBPoint() *write.Point
+}
+
 // DefaultInfluxDBConfig returns default InfluxDB config.
 func DefaultInfluxDBConfig() InfluxDBConfig {
 	return InfluxDBConfig{
@@ -102,8 +107,8 @@ func (m *Quote) InfluxDBPoint() *write.Point {
 }
 
 // InfluxDBStore stores the data point.
-func (s *Server) InfluxDBStore(point *write.Point) {
+func (s *Server) InfluxDBStore(object InfluxDBPointer) {
 	if s.dbWriter != nil {
-		s.dbWriter.WritePoint(point)
+		s.dbWriter.WritePoint(object.InfluxDBPoint())
 	}
 }

@@ -4,7 +4,7 @@ package server
 func (s *Server) ProcessCandle(c *Candle) error {
 	s.NATSSend(c)
 	s.MongoDBStore(c)
-	s.InfluxDBStore(c.InfluxDBPoint())
+	s.InfluxDBStore(c)
 	return nil
 }
 
@@ -12,6 +12,6 @@ func (s *Server) ProcessCandle(c *Candle) error {
 func (s *Server) ProcessQuote(c *Quote) error {
 	s.NATSSend(c)
 	s.MongoDBStore(c)
-	s.InfluxDBStore(c.InfluxDBPoint())
+	s.InfluxDBStore(c)
 	return nil
 }
