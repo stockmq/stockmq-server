@@ -25,3 +25,7 @@ certs/*.pem
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Reports
+test-report.json
+vet-report.json
