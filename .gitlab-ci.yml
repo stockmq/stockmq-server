@@ -1,0 +1,45 @@
+image: golang:1.20
+
+stages:
+  - scan
+  - test
+  - build
+
+# @Description Runs go vet
+vet:
+  stage: scan
+  script:
+    - go vet -json ./... | tee vet-report.json
+  artifacts:
+    when: always
+    paths:
+      - vet-report.json
+    expire_in: 1 hour
+
+# @Description Runs go test
+test:
+  stage: test
+  script:
+    - go test -coverprofile=coverage.out -json ./... | tee test-report.json
+  artifacts:
+    when: always
+    paths:
+      - test-report.json
+      - coverage.out
+    expire_in: 1 hour
+
+# @Description Runs goreleaser (builds snapshot)
+build-snapshot:
+  stage: build
+  image:
+    name: goreleaser/goreleaser
+    entrypoint: ['']
+  variables:
+    GIT_DEPTH: 0
+  script:
+    - goreleaser build --clean --snapshot
+  artifacts:
+    when: always
+    paths:
+      - dist/
+    expire_in: 1 hour
