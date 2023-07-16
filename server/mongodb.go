@@ -83,7 +83,7 @@ func (s *Server) HandleMongoDBError(err error) {
 	// Runs goroutine to restart MongoDB connection after RetryDelay
 	go func() {
 		cfg := s.MongoDBConfig()
-		s.ncReconn.Store(true)
+		s.mongoReconn.Store(true)
 		s.Noticef("MongoDB: Reconnecting to %s in %ds", cfg.URL, cfg.RetryDelay)
 
 		select {
