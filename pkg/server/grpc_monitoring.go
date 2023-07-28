@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"github.com/stockmq/stockmq-server/pb"
+	"github.com/stockmq/stockmq-server/pkg/pb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )

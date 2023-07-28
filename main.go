@@ -5,7 +5,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/stockmq/stockmq-server/server"
+	"github.com/stockmq/stockmq-server/pkg/server"
 )
 
 func main() {

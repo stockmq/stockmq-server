@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/stockmq/stockmq-server/pb"
+	"github.com/stockmq/stockmq-server/pkg/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
