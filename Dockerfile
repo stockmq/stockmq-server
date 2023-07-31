@@ -4,8 +4,7 @@ FROM golang:1.20 as build
 
 WORKDIR /go/src/app
 COPY main.go go.mod go.sum ./
-COPY pb ./pb
-COPY server ./server
+COPY pkg ./pkg
 
 RUN go mod download
 RUN go vet -v ./...
