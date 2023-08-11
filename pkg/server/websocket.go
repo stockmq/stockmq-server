@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -24,6 +26,14 @@ type WSConfig struct {
 	ReadLimit    int64    `xml:"ReadLimit"`
 	Headers      []Header `xml:"Header"`
 	InitMessages []string `xml:"InitMessage"`
+}
+
+type WSConnection struct {
+	sync.RWMutex
+
+	wsConfig WSConfig
+	wsConn   *websocket.Conn
+	wsReconn atomic.Bool
 }
 
 var (
