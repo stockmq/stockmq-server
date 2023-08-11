@@ -38,7 +38,6 @@ func (c *WSConnection) IsWSReconnecting() bool {
 // WSKeepAlive enabled Ping-Pong with given timeout.
 func (s *Server) WSKeepAlive(cfg WSConfig, c *websocket.Conn) {
 	if cfg.PingTimeout < 1 {
-		s.Debugf("WSS %s: PingTimeout is less than 1. KeepAlive disabled.", cfg.Name)
 		return
 	}
 
@@ -59,13 +58,13 @@ func (s *Server) WSKeepAlive(cfg WSConfig, c *websocket.Conn) {
 			deadline := time.Now().Add(timeout / 2)
 
 			if err := c.WriteControl(websocket.PingMessage, []byte{}, deadline); err != nil {
-				s.Errorf("WSS %s: error sending ping message: %v", cfg.Name, err)
+				s.logger.Error("WSS error sending ping message", "name", cfg.Name, "error", err)
 				return
 			}
 			select {
 			case <-ticker.C:
 				if time.Since(lastResponse) > timeout {
-					s.Errorf("WSS %s: ping-pong timeout", cfg.Name)
+					s.logger.Error("WSS ping-pong timeout", "name", cfg.Name)
 					return
 				}
 			case <-s.quitCh:
@@ -81,7 +80,7 @@ func (s *Server) StartWS(conn *WSConnection) {
 	cfg := conn.wsConfig
 
 	// Log the message
-	s.Noticef("Starting WebSocket connection %s (%s)", cfg.Name, cfg.URL)
+	s.logger.Info("Starting WebSocket connection", "name", cfg.Name, "url", cfg.URL)
 
 	// Find the message handler for the given Type
 	handler := Handlers[cfg.Handler]
@@ -145,7 +144,7 @@ func (s *Server) WSHandleError(conn *WSConnection, err error) {
 		return
 	}
 
-	s.Errorf("WSS %s: %v", conn.wsConfig.Name, err)
+	s.logger.Error("WSS Error", "name", conn.wsConfig.Name, "error", err)
 
 	conn.Lock()
 	if conn.wsConn != nil {
@@ -158,7 +157,7 @@ func (s *Server) WSHandleError(conn *WSConnection, err error) {
 	// Runs goroutine to restart WebSocket connection after RetryDelay
 	go func() {
 		conn.wsReconn.Store(true)
-		s.Noticef("WSS %s: Reconnecting in %d seconds", cfg.Name, cfg.RetryDelay)
+		s.logger.Info("WSS Reconnecting", "name", cfg.Name, "delay", cfg.RetryDelay)
 
 		select {
 		case <-s.quitCh:

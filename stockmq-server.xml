@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
     <Logger>
-        <Debug>false</Debug>
+        <Debug>true</Debug>
     </Logger>
 
     <Monitor>
@@ -14,7 +14,7 @@
     </Monitor>
 
     <MongoDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>mongodb://localhost:27017</URL>
         <RetryDelay>5</RetryDelay>
         <Database>stockmq</Database>
@@ -23,9 +23,9 @@
     </MongoDB>
 
     <InfluxDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>http://127.0.0.1:8086</URL>
-        <Token>-2ViijOdnYC5t2LDssLZ6KMMEvRZUgrul_dqMpl82lbuPeiD6eKTvAKW62mS2D94u9xRH9Lh0fyeggVqRb3CDQ==</Token>
+        <Token>-<!-- InfluxDB token --></Token>
         <Organization>stockmq</Organization>
         <Bucket>stockmq-data</Bucket>
     </InfluxDB>
@@ -58,7 +58,7 @@
 
     <WebSocket>
         <Name>Binance-LTCUSD</Name>
-        <Enabled>false</Enabled>
+        <Enabled>true</Enabled>
         <URL>wss://stream.binance.com:9443/ws</URL>
         <Handler>Binance</Handler>
         <DialTimeout>4</DialTimeout>

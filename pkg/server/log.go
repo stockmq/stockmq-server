@@ -1,8 +1,8 @@
 package server
 
 import (
-	"fmt"
-	"log"
+	"log/slog"
+	"os"
 )
 
 // Logger Configuration
@@ -22,24 +22,12 @@ func (s *Server) LoggerConfig() LoggerConfig {
 	return s.ServerConfig().Logger
 }
 
-// Debugf prints the debug message to the log.
-func (s *Server) Debugf(format string, v ...any) {
-	if s.LoggerConfig().Debug {
-		log.Printf("[DBG] %s", fmt.Sprintf(format, v...))
+// NewLogger returns log/slog logger with configured options
+func NewLogger(config ServerConfig) *slog.Logger {
+	opts := &slog.HandlerOptions{}
+	if config.Logger.Debug {
+		opts.Level = slog.LevelDebug
 	}
-}
 
-// Noticef prints the notice message to the log.
-func (s *Server) Noticef(format string, v ...any) {
-	log.Printf("[INF] %s", fmt.Sprintf(format, v...))
-}
-
-// Warnf prints the warning message to the log.
-func (s *Server) Warnf(format string, v ...any) {
-	log.Printf("[WRN] %s", fmt.Sprintf(format, v...))
-}
-
-// Errorf prints the error message to the log.
-func (s *Server) Errorf(format string, v ...any) {
-	log.Printf("[ERR] %s", fmt.Sprintf(format, v...))
+	return slog.New(slog.NewJSONHandler(os.Stdout, opts))
 }

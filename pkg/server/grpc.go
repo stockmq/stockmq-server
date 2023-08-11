@@ -37,7 +37,7 @@ func (s *Server) GRPCConfig() GRPCConfig {
 // StartGRPC starts the GRPC server.
 func (s *Server) StartGRPC() error {
 	cfg := s.GRPCConfig()
-	s.Noticef("Starting GRPC on %v tls: %v", cfg.Bind, cfg.TLS)
+	s.logger.Info("Starting GRPC", "bind", cfg.Bind, "tls", cfg.TLS)
 
 	grpcListener, err := net.Listen("tcp", cfg.Bind)
 	if err != nil {
@@ -71,7 +71,7 @@ func (s *Server) StartGRPC() error {
 	go func() {
 		if err := grpcServer.Serve(grpcListener); err != nil {
 			if !s.IsShutdown() {
-				s.Errorf("GRPC: error serving: %v", err)
+				s.logger.Error("GRPC: error serving", "error", err)
 
 				// TODO (nusov): cancel Start() and close all open connections before exit
 				os.Exit(1)

@@ -46,7 +46,7 @@ func (s *Server) CloseMongoDB() {
 	defer s.mongoMu.Unlock()
 	if s.mongoClient != nil {
 		if err := s.mongoClient.Disconnect(context.TODO()); err != nil {
-			s.Errorf("MongoDB: cannot Disconnect()")
+			s.logger.Error("MongoDB: cannot Disconnect()")
 		}
 
 		s.mongoClient = nil
@@ -56,7 +56,7 @@ func (s *Server) CloseMongoDB() {
 // StartMongoDB starts MongoDB client.
 func (s *Server) StartMongoDB() {
 	cfg := s.MongoDBConfig()
-	s.Noticef("Starting MongoDB connection to %s", cfg.URL)
+	s.logger.Info("Starting MongoDB connection", "url", cfg.URL)
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -77,14 +77,14 @@ func (s *Server) HandleMongoDBError(err error) {
 	}
 
 	// Close MongoDB connection
-	s.Errorf("MongoDB: %v", err)
+	s.logger.Error("MongoDB error closing connection", "error", err)
 	s.CloseMongoDB()
 
 	// Runs goroutine to restart MongoDB connection after RetryDelay
 	go func() {
 		cfg := s.MongoDBConfig()
 		s.mongoReconn.Store(true)
-		s.Noticef("MongoDB: Reconnecting to %s in %ds", cfg.URL, cfg.RetryDelay)
+		s.logger.Info("MongoDB: Reconnecting", "url", cfg.URL, "delay", cfg.RetryDelay)
 
 		select {
 		case <-s.quitCh:

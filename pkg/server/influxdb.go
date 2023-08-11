@@ -42,7 +42,7 @@ func (s *Server) InfluxDBConfig() InfluxDBConfig {
 // StartDB starts the DB (InfluxDB) client.
 func (s *Server) StartInfluxDB() {
 	cfg := s.InfluxDBConfig()
-	s.Noticef("Starting InfluxDB connection to %s", cfg.URL)
+	s.logger.Info("Starting InfluxDB connection", "url", cfg.URL)
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -57,7 +57,7 @@ func (s *Server) StartInfluxDB() {
 			select {
 			case err := <-errorsCh:
 				if err != nil {
-					s.Errorf("InfluxDB write error: %v", err)
+					s.logger.Error("InfluxDB write error", "error", err)
 				}
 			case <-s.quitCh:
 				return

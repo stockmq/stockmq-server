@@ -44,7 +44,7 @@ func (s *Server) ResponseHandler(w http.ResponseWriter, r *http.Request, code in
 
 	b, err := json.Marshal(data)
 	if err != nil {
-		s.Errorf("Monitor: Error marshaling response to %s request: %v", r.URL, err)
+		s.logger.Error("Monitor: Error marshaling response", "url", r.URL, "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -78,7 +78,7 @@ func (s *Server) HandleReadyz(w http.ResponseWriter, r *http.Request) {
 // StartMonitor starts the HTTP or HTTPs server if needed.
 func (s *Server) StartMonitor() {
 	cfg := s.MonitorConfig()
-	s.Noticef("Starting Monitor on %v tls: %v", cfg.Bind, cfg.TLS)
+	s.logger.Info("Starting Monitor", "bind", cfg.Bind, "tls", cfg.TLS)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc(LivezEndpoint, s.HandleLivez)
@@ -104,7 +104,7 @@ func (s *Server) StartMonitor() {
 
 		if err := serve(); err != nil {
 			if !s.IsShutdown() {
-				s.Errorf("Monitor: error starting monitor (FATAL): %v", err)
+				s.logger.Error("Monitor: error starting monitor (FATAL)", "error", err)
 
 				// TODO (nusov): cancel Start() and close all open connections before exit
 				os.Exit(1)

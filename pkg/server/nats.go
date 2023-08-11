@@ -49,7 +49,7 @@ func (m *Quote) NATSSubject() string {
 // StartNATS starts the NATS client.
 func (s *Server) StartNATS() {
 	cfg := s.NATSConfig()
-	s.Noticef("Starting NATS connection to %s", cfg.URL)
+	s.logger.Info("Starting NATS connection", "url", cfg.URL)
 
 	nc, err := nats.Connect(cfg.URL, cfg.NATSOptions()...)
 	if err != nil {
@@ -97,14 +97,14 @@ func (s *Server) HandleNATSError(err error) {
 	}
 
 	// Close NATS connection
-	s.Errorf("NATS: %v", err)
+	s.logger.Error("NATS Error", "error", err)
 	s.CloseNATS()
 
 	// Runs goroutine to restart NATS connection after RetryDelay
 	go func() {
 		cfg := s.NATSConfig()
 		s.ncReconn.Store(true)
-		s.Noticef("NATS: Reconnecting to %s in %ds", cfg.URL, cfg.RetryDelay)
+		s.logger.Info("NATS: Reconnecting", "url", cfg.URL, "delay", cfg.RetryDelay)
 
 		select {
 		case <-s.quitCh:

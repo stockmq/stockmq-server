@@ -6,6 +6,7 @@ package server
 import (
 	"context"
 	"errors"
+	"log/slog"
 	"net"
 	"net/http"
 	"sync"
@@ -62,6 +63,8 @@ type Server struct {
 	startupComplete  chan struct{}
 	shutdownComplete chan struct{}
 
+	logger *slog.Logger
+
 	mu sync.RWMutex
 
 	running  atomic.Bool
@@ -96,6 +99,7 @@ type Server struct {
 func NewServer(config ServerConfig) (*Server, error) {
 	s := &Server{}
 	s.config = config
+	s.logger = NewLogger(config)
 	s.quitCh = make(chan struct{})
 	s.startupComplete = make(chan struct{})
 	s.shutdownComplete = make(chan struct{})
@@ -125,7 +129,7 @@ func (s *Server) Start() error {
 	}
 
 	// Set running to true to avoid race between multiple Start() calls
-	s.Noticef("Starting StockMQ Server")
+	s.logger.Info("Starting StockMQ Server")
 	s.running.Store(true)
 
 	// Start signal handler
@@ -174,7 +178,7 @@ func (s *Server) Shutdown() {
 	s.shutdown.Store(true)
 
 	// Kick NATS if its running
-	s.Noticef("Shutting down the NATS connection...")
+	s.logger.Info("Shutting down the NATS connection...")
 	s.CloseNATS()
 
 	s.mu.Lock()
@@ -184,7 +188,7 @@ func (s *Server) Shutdown() {
 	for k, conn := range s.wsConnections {
 		conn.Lock()
 		if conn.wsConn != nil {
-			s.Noticef("Shutting down the %s websocket...", k)
+			s.logger.Info("Shutting down the websocket...", "name", k)
 			conn.wsConn.Close()
 			conn.wsConn = nil
 		}
@@ -193,24 +197,24 @@ func (s *Server) Shutdown() {
 
 	// Kick off HTTP monitor
 	if s.monitorServer != nil {
-		s.Noticef("Shutting down the monitor...")
+		s.logger.Info("Shutting down the monitor...")
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()
 		if err := s.monitorServer.Shutdown(ctx); err != nil {
-			s.Errorf("error during graceful shutdown: %v", err)
+			s.logger.Error("Error during graceful shutdown", "error", err)
 		}
 		s.monitorServer = nil
 	}
 
 	// Kick off MongoDB
 	if s.mongoClient != nil {
-		s.Noticef("Shutting down the MongoDB connection...")
+		s.logger.Info("Shutting down the MongoDB connection...")
 		s.CloseMongoDB()
 	}
 
 	// Kick off InfluxDB
 	if s.dbWriter != nil {
-		s.Noticef("Shutting down the InfluxDB connection...")
+		s.logger.Info("Shutting down the InfluxDB connection...")
 		s.dbWriter.Flush()
 
 		if s.dbClient != nil {
@@ -220,7 +224,7 @@ func (s *Server) Shutdown() {
 
 	// Kick off GRPC server
 	if s.grpcListener != nil {
-		s.Noticef("Shutting down the GRPC server...")
+		s.logger.Info("Shutting down the GRPC server...")
 		s.grpcServer.Stop()
 		s.grpcListener.Close()
 	}
