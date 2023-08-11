@@ -15,7 +15,7 @@ func (s *Server) HandleSignals() {
 		for {
 			select {
 			case sig := <-sigs:
-				s.Noticef("Signal '%v' received", sig)
+				s.logger.Info("Signal received", "signal", sig)
 
 				switch sig {
 				case syscall.SIGINT:

@@ -2,7 +2,7 @@ package server
 
 // WSDebugHandler just prints received message.
 func WSDebugHandler(s *Server, w *WSConnection, msg []byte) error {
-	s.Noticef("WSS %s: %s", w.wsConfig.Name, msg)
+	s.logger.Info("WSS", "name", w.wsConfig.Name, "message", msg)
 	return nil
 }
 

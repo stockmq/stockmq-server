@@ -14,7 +14,7 @@
     </Monitor>
 
     <MongoDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>mongodb://localhost:27017</URL>
         <RetryDelay>5</RetryDelay>
         <Database>stockmq</Database>
@@ -23,9 +23,9 @@
     </MongoDB>
 
     <InfluxDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>http://127.0.0.1:8086</URL>
-        <Token>-2ViijOdnYC5t2LDssLZ6KMMEvRZUgrul_dqMpl82lbuPeiD6eKTvAKW62mS2D94u9xRH9Lh0fyeggVqRb3CDQ==</Token>
+        <Token>-<!-- InfluxDB token --></Token>
         <Organization>stockmq</Organization>
         <Bucket>stockmq-data</Bucket>
     </InfluxDB>
@@ -46,7 +46,7 @@
 
     <WebSocket>
         <Name>Binance-BTCUSD</Name>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>wss://stream.binance.com:9443/ws</URL>
         <Handler>Binance</Handler>
         <DialTimeout>4</DialTimeout>
@@ -68,35 +68,33 @@
         <InitMessage>{"id": 0, "method": "SUBSCRIBE", "params": ["ltcusdt@kline_1m", "ltcusdt@depth"]}</InitMessage>
     </WebSocket>
 
-    <!-- Deprecation warning: Tinkoff OpenAPI will be deprecated in 2023. -->
     <WebSocket>
-        <Name>Tinkoff-USDRUR</Name>
+        <Name>Kraken</Name>
         <Enabled>false</Enabled>
-        <URL>wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws</URL>
-        <Handler>Tinkoff</Handler>
-        <Header Name="Authorization">Bearer <!-- Tinkoff OpenAPI Token --></Header>
-        <DialTimeout>4</DialTimeout>
-        <RetryDelay>5</RetryDelay>
-        <PingTimeout>30</PingTimeout>
-        <ReadLimit>655350</ReadLimit>
-        <InitMessage>{"event": "candle:subscribe", "figi": "BBG0013HGFT4", "interval": "5min"}</InitMessage>
-        <InitMessage>{"event": "orderbook:subscribe", "figi": "BBG0013HGFT4", "depth": 5}</InitMessage>
-    </WebSocket>
-
-    <WebSocket>
         <URL>wss://ws.kraken.com</URL>
         <DialTimeout>4</DialTimeout>
-        <Enabled>false</Enabled>
         <Handler>Debug</Handler>
         <InitMessage>{"event": "subscribe", "pair": ["XBT/USD"], "subscription": {"name": "ticker"}}</InitMessage>
     </WebSocket>
 
     <WebSocket>
+        <Name>EXMO</Name>
+        <Enabled>false</Enabled>
         <URL>wss://ws-api.exmo.com:443/v1/public</URL>
         <DialTimeout>4</DialTimeout>
-        <Enabled>false</Enabled>
         <Handler>Debug</Handler>
         <InitMessage>{"id":1,"method":"subscribe","topics":["spot/trades:BTC_USD","spot/ticker:LTC_USD"]}</InitMessage>
     </WebSocket>
+
+    <Tinkoff>
+        <Name>Tinkoff</Name>
+        <Enabled>false</Enabled>
+        <Config>tinkoff.yaml</Config>
+        
+        <!-- Subscribe to one-minute candles -->
+        <Candle>BBG004730N88</Candle>
+        <Candle>BBG00475KKY8</Candle>
+        <Candle>BBG004RVFCY3</Candle>
+    </Tinkoff>
 </Config>
 

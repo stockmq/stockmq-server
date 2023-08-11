@@ -123,22 +123,22 @@ func WSBinanceHandler(s *Server, w *WSConnection, msg []byte) error {
 
 			return s.ProcessQuote(r)
 		default:
-			s.Errorf("WSS %s: unknown event '%s'", w.wsConfig.Name, *message.EventType)
+			s.logger.Error("Binance unknown event", "name", w.wsConfig.Name, "event", *message.EventType)
 		}
 	case message.ErrorCode != nil:
 		m := &BinanceError{}
 		if err := json.Unmarshal(msg, m); err != nil {
 			return err
 		}
-		s.Errorf("WSS %s: %+v", w.wsConfig.Name, m)
+		s.logger.Error("Binance error", "name", w.wsConfig.Name, "error", m)
 	case message.ID != nil:
 		m := &BinanceError{}
 		if err := json.Unmarshal(msg, m); err != nil {
 			return err
 		}
-		s.Debugf("WSS %s: result %+v", w.wsConfig.Name, m)
+		s.logger.Debug("Binance", "name", w.wsConfig.Name, "error", m)
 	default:
-		s.Debugf("WSS %s: unknown message %s", w.wsConfig.Name, msg)
+		s.logger.Error("Binance unknown message", "name", w.wsConfig.Name, "message", msg)
 	}
 	return nil
 }
