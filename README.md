@@ -6,7 +6,7 @@
 
 High-Performance message broker for the market data.
 
-This repository provides core functionality including WebSocket connector for Binance and Tinkoff OpenAPI. 
+This repository provides core functionality including WebSocket connector for Binance. 
 
 # Requirements
 
