@@ -29,3 +29,6 @@ certs/*.pem
 # Reports
 test-report.json
 vet-report.json
+
+# Dist
+dist
