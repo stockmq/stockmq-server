@@ -14,7 +14,7 @@
     </Monitor>
 
     <MongoDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>mongodb://localhost:27017</URL>
         <RetryDelay>5</RetryDelay>
         <Database>stockmq</Database>
@@ -23,7 +23,7 @@
     </MongoDB>
 
     <InfluxDB>
-        <Enabled>true</Enabled>
+        <Enabled>false</Enabled>
         <URL>http://127.0.0.1:8086</URL>
         <Token>-2ViijOdnYC5t2LDssLZ6KMMEvRZUgrul_dqMpl82lbuPeiD6eKTvAKW62mS2D94u9xRH9Lh0fyeggVqRb3CDQ==</Token>
         <Organization>stockmq</Organization>
