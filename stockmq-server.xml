@@ -68,21 +68,6 @@
         <InitMessage>{"id": 0, "method": "SUBSCRIBE", "params": ["ltcusdt@kline_1m", "ltcusdt@depth"]}</InitMessage>
     </WebSocket>
 
-    <!-- Deprecation warning: Tinkoff OpenAPI will be deprecated in 2023. -->
-    <WebSocket>
-        <Name>Tinkoff-USDRUR</Name>
-        <Enabled>false</Enabled>
-        <URL>wss://api-invest.tinkoff.ru/openapi/md/v1/md-openapi/ws</URL>
-        <Handler>Tinkoff</Handler>
-        <Header Name="Authorization">Bearer <!-- Tinkoff OpenAPI Token --></Header>
-        <DialTimeout>4</DialTimeout>
-        <RetryDelay>5</RetryDelay>
-        <PingTimeout>30</PingTimeout>
-        <ReadLimit>655350</ReadLimit>
-        <InitMessage>{"event": "candle:subscribe", "figi": "BBG0013HGFT4", "interval": "5min"}</InitMessage>
-        <InitMessage>{"event": "orderbook:subscribe", "figi": "BBG0013HGFT4", "depth": 5}</InitMessage>
-    </WebSocket>
-
     <WebSocket>
         <URL>wss://ws.kraken.com</URL>
         <DialTimeout>4</DialTimeout>
